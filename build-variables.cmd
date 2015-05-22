@@ -5,7 +5,7 @@ set ctime=%ctime:~-4%
 set DateTime=%cdate%_%ctime%
 
 if not defined MSBuildCustomPath (
-	set MSBuildCustomPath=MSBuild.exe
+	set MSBuildCustomPath="%ProgramFiles(x86)%\MSBuild\12.0\Bin\MSBuild.exe"
 )
 
 if not defined NuGetPath (
