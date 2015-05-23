@@ -19,12 +19,11 @@ call build-compile %SolutionRootPath% %BuildTempDir%
 set WebProjectOutputFolder=
 for /d %%i in (%BuildTempDir%\_PublishedWebsites\*) do set WebProjectOutputFolder=%%i
 
-echo %BuildOutDir% %DateTime%
 
 :: Create differential output
-call build-output-differential %WebProjectOutputFolder% %BuildOutDir% %DateTime%
+call build-output-differential %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
 
 :: Create full output
-call build-output-full %WebProjectOutputFolder% %BuildOutDir% %DateTime%
+call build-output-full %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
 
 endlocal

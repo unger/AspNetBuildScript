@@ -1,5 +1,6 @@
 set GitTemp=%BuildRootDir%\GitTemp
 
+
 if defined GitRemoteRepo (
 
 	echo Clone with git
@@ -9,5 +10,7 @@ if defined GitRemoteRepo (
 	git clone %GitRemoteRepo% %GitTemp%
 	
 	set SolutionRootPath=%GitTemp%
+	
+	for /f %%i in ('git rev-parse --verify HEAD') do set BuildIdentifier=%%i
 )
 

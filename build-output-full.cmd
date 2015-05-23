@@ -20,12 +20,22 @@ if not defined buildID (
 
 set buildFullOutDir=%targetDir%\Full\%buildID%
 
-if not "%sourceDir%" == "" (
+if exist %buildFullOutDir% (
 
-	robocopy %sourceDir% %buildFullOutDir%\Site /MIR /R:5 /W:1 /FFT
-
-	:: Zip full output folder
-	powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%buildFullOutDir%', '%targetDir%\%buildID%_full.zip'); }"
+	echo %buildFullOutDir% already exists
+	exit /b
+	
 )
+else (
+
+	if not "%sourceDir%" == "" (
+
+		robocopy %sourceDir% %buildFullOutDir%\Site /MIR /R:5 /W:1 /FFT
+
+		:: Zip full output folder
+		powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%buildFullOutDir%', '%targetDir%\%buildID%_full.zip'); }"
+	)
+)
+
 
 endlocal
