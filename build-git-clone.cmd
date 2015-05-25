@@ -11,6 +11,6 @@ if defined GitRemoteRepo (
 	
 	set SolutionRootPath=%GitTemp%
 	
-	for /f %%i in ('git rev-parse --verify HEAD') do set BuildIdentifier=%%i
+	for /f %%i in ('git rev-parse --verify HEAD') do set BuildIdentifier=%DateTime%_%%i
 )
 
