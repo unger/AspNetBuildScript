@@ -23,10 +23,10 @@ call build-configuration-transform %SolutionRootPath%/%WebProjectName% %WebProje
 
 
 :: Create differential output
-::call build-output-differential %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
+call build-output-differential %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
 
 
 :: Create full output
-::call build-output-full %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
+call build-output-full %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
 
 endlocal
