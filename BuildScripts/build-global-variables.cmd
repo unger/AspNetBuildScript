@@ -32,6 +32,10 @@ if not defined BuildRootDir (
 set BuildTempDir=%BuildRootDir%\Temp
 set BuildOutDir=%BuildRootDir%\%BuildConfig%
 
+if not exist "%BuildOutDir%/" (
+	mkdir %BuildOutDir%
+)
+
 set WebProjectOutputFolder=%BuildTempDir%\_PublishedWebsites\%WebProjectName%
 
 
