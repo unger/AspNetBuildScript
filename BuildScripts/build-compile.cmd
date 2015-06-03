@@ -1,5 +1,9 @@
 set MsBuildLogFile=%BuildOutDir%\msbuild_%BuildIdentifier%.log
 
+if not exist "%BuildOutDir%/" (
+	mkdir %BuildOutDir%
+)
+
 cmd /c "cd /d %SolutionRootPath% && %NuGetPath% restore"
 if %ERRORLEVEL% NEQ 0 (
 	pause
@@ -7,7 +11,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 
-cmd /c "cd /d %SolutionRootPath% && %MSBuildCustomPath% %SolutionName% /t:Rebuild /fl /flp:logfile=%MsBuildLogFile% /p:Configuration=%BuildConfig%;OutDir="%BuildTempDir%";UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False"
+cmd /c "cd /d %SolutionRootPath% && %MSBuildCustomPath% %SolutionName% /t:Rebuild /fl /flp:logfile="%MsBuildLogFile%" /p:Configuration=%BuildConfig%;OutDir="%BuildTempDir%";UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False"
 if %ERRORLEVEL% NEQ 0 (
 	pause
 	exit /b

@@ -4,16 +4,9 @@ if "%BuildConfig%" == "" (
 	set BuildConfig=Release
 )
 
-:: Alternative way to get datetime
-:: for /f %%x in ('wmic path win32_localtime get /format:list ^| findstr "="') do set %%x
-:: set today=%Year%-%Month%-%Day%
 
-
-for /f "tokens=1-3 delims=-" %%a in ("%DATE%") do (set cdate=%%a%%b%%c)
-for /f "tokens=1-2 delims=/: " %%a in ("%TIME%") do (set ctime=0%%a%%b)
-set ctime=%ctime:~-4%
-
-set DateTime=%cdate%_%ctime%
+set DateTime=
+Call:GetDateTime DateTime
 
 set BuildIdentifier=%DateTime%
 
@@ -37,10 +30,23 @@ if not defined BuildRootDir (
 set BuildTempDir=%BuildRootDir%\Temp
 set BuildOutDir=%BuildRootDir%\%BuildConfig%
 
-if not exist "%BuildOutDir%/" (
-	mkdir %BuildOutDir%
-)
 
 set WebProjectOutputFolder=%BuildTempDir%\_PublishedWebsites\%WebProjectName%
+
+goto:eof
+
+
+:GetDateTime       -- function description here
+::                 -- %~1: return into variable
+SETLOCAL
+REM.--function body here
+
+for /F "usebackq tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if '.%%i.'=='.LocalDateTime.' set ldt=%%j
+set ldt=%ldt:~0,4%%ldt:~4,2%%ldt:~6,2%_%ldt:~8,2%%ldt:~10,2%%ldt:~12,2%
+
+(ENDLOCAL & REM -- RETURN VALUES
+    IF "%~1" NEQ "" SET %~1=%ldt%
+)
+goto:eof
 
 

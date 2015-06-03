@@ -18,7 +18,7 @@ if not defined buildID (
 	exit /b
 )
 
-set buildFullOutDir=%targetDir%\Full\%buildID%
+set buildFullOutDir=%targetDir%\%buildID%
 
 if exist %buildFullOutDir% (
 

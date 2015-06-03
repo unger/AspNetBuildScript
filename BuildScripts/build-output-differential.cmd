@@ -1,3 +1,5 @@
+:: Deprecated not used anymore
+
 @echo Off
 
 setlocal
