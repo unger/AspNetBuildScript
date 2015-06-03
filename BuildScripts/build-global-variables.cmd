@@ -4,6 +4,11 @@ if "%BuildConfig%" == "" (
 	set BuildConfig=Release
 )
 
+:: Alternative way to get datetime
+:: for /f %%x in ('wmic path win32_localtime get /format:list ^| findstr "="') do set %%x
+:: set today=%Year%-%Month%-%Day%
+
+
 for /f "tokens=1-3 delims=-" %%a in ("%DATE%") do (set cdate=%%a%%b%%c)
 for /f "tokens=1-2 delims=/: " %%a in ("%TIME%") do (set ctime=0%%a%%b)
 set ctime=%ctime:~-4%
