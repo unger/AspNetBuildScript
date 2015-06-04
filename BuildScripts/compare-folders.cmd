@@ -6,6 +6,11 @@ setlocal EnableDelayedExpansion
 :: Import variables
 call _deploy-variables.cmd
 
+if not exist %DeployDestinationFolder% (
+	echo Destination folder is missing %DeployDestinationFolder%
+	pause
+	goto:eof
+)
 
 
 set LogFile=%cd%\compare-log.txt
@@ -42,13 +47,21 @@ for /r "%DeploySourceFolder%" %%f in (*.*) do (
 	)
 )
 
-echo 
 
-for %%a in (%DeployPurgeFolders%) do (
-	set folder=%%a
-	if exist %DeployDestinationFolder%\!folder! (
-		pushd %DeployDestinationFolder%\!folder!
-		for /r %%f in (*.*) do (
+call :ProcessDeployPurgeFolders %DeployPurgeFolders%
+
+
+pause
+goto:eof
+
+
+:ProcessDeployPurgeFolders
+	
+	if "%1"=="" exit /b
+
+	if exist %DeployDestinationFolder%\%1 (
+
+		for /r %DeployDestinationFolder%\%1 %%f in (*.*) do (
 			set oldfile=%%f
 			set oldfile=!oldfile:%DeployDestinationFolder%=!
 			if "!oldfile:~0,1!"=="\" SET oldfile=!oldfile:~1!
@@ -60,12 +73,9 @@ for %%a in (%DeployPurgeFolders%) do (
 				echo f | xcopy "%DeployDestinationFolder%\!oldfile!" "%DeployBackupFolder%\!oldfile!" /Y
 				echo echo f ^| xcopy "%DeployBackupFolder%\!oldfile!" "%DeployDestinationFolder%\!oldfile!" /Y >> "%RestoreFile%"
 			)
+
 		)
-		popd
 	)
-)
-
-
-endlocal
-
-pause
+	shift
+	
+goto :ProcessDeployPurgeFolders
