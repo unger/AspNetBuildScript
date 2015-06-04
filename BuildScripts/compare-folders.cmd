@@ -4,17 +4,19 @@ setlocal ENABLEEXTENSIONS
 setlocal EnableDelayedExpansion
 
 :: Import variables
-call deploy-variables.cmd
+call _deploy-variables.cmd
 
 
 
 set LogFile=%cd%\compare-log.txt
 set DeployFile=%cd%\deploy.cmd
+set RestoreFile=%cd%\restore.cmd
 set DeploySourceFolder=%cd%\Site
 set DeployBackupFolder=%cd%\Backup
 
-echo Compare with %DeployDestinationFolder% > "%LogFile%"
-echo ::Compare with %DeployDestinationFolder% > "%DeployFile%"
+del "%LogFile%" /Q
+del "%DeployFile%" /Q
+del "%RestoreFile%" /Q
 
 for /r "%DeploySourceFolder%" %%f in (*.*) do (
 	set sourceFile=%%f
@@ -29,11 +31,14 @@ for /r "%DeploySourceFolder%" %%f in (*.*) do (
 		echo echo f ^| xcopy "Site\!sourceFile!" "%DeployDestinationFolder%\!sourceFile!" /Y >> "%DeployFile%"
 		:: Backup file
 		echo f | xcopy "%DeployDestinationFolder%\!sourceFile!" "%DeployBackupFolder%\!sourceFile!" /Y
+		echo echo f ^| xcopy "%DeployBackupFolder%\!sourceFile!" "%DeployDestinationFolder%\!sourceFile!" /Y >> "%RestoreFile%"
 	)
 	
 	if !ErrorLevel!==2 (
 		echo New file: !sourceFile! >> "%LogFile%"
 		echo echo f ^| xcopy "Site\!sourceFile!" "%DeployDestinationFolder%\!sourceFile!" /Y >> "%DeployFile%"
+		:: Backup file
+		echo del "%DeployDestinationFolder%\!sourceFile!" /Q >> "%RestoreFile%"
 	)
 )
 
@@ -53,14 +58,11 @@ for %%a in (%DeployPurgeFolders%) do (
 				echo del "%DeployDestinationFolder%\!oldfile!" /Q >> "%DeployFile%"
 				:: Backup file
 				echo f | xcopy "%DeployDestinationFolder%\!oldfile!" "%DeployBackupFolder%\!oldfile!" /Y
+				echo echo f ^| xcopy "%DeployBackupFolder%\!oldfile!" "%DeployDestinationFolder%\!oldfile!" /Y >> "%RestoreFile%"
 			)
 		)
 		popd
 	)
-)
-
-if exist Backup\ (
-	echo robocopy Backup %DeployDestinationFolder% /S /R:5 /W:1 /FFT > restore.cmd
 )
 
 

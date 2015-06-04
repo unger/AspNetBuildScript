@@ -10,11 +10,11 @@ if not defined targetDir (
 
 
 set DeployDestinationFolder=!DeployDestinationFolder%BuildConfig%!
-set DeployVariablesFile=%targetDir%\deploy-variables.cmd
+set DeployVariablesFile=%targetDir%\_deploy-variables.cmd
 
 if not "!DeployDestinationFolder!" == "" (
 
-	robocopy "%BuildScriptsPath%" "%targetDir%" deploy-compare.cmd
+	copy "%BuildScriptsPath%\compare-folders.cmd" "%targetDir%\compare-folders.cmd" 
 	
 	echo set DeployDestinationFolder=!DeployDestinationFolder!> %DeployVariablesFile%
 	echo set DeployPurgeFolders=%DeployPurgeFolders%>> %DeployVariablesFile%
