@@ -32,8 +32,6 @@ else (
 
 		robocopy %sourceDir% %buildFullOutDir%\Site /MIR /R:5 /W:1 /FFT
 
-		:: Zip full output folder
-		powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%buildFullOutDir%', '%targetDir%\%buildID%_full.zip'); }"
 	)
 )
 

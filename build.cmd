@@ -26,4 +26,13 @@ call %BuildScriptsPath%/build-configuration-transform %SolutionRootPath%/%WebPro
 :: Create output
 call %BuildScriptsPath%/build-output %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
 
+:: Generate deploy scripts
+call %BuildScriptsPath%/build-generate-deployscripts %BuildOutDir%\%BuildIdentifier%
+
+
+:: Zip output folder
+powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%BuildOutDir%\%BuildIdentifier%', '%BuildOutDir%\%BuildConfig%_%BuildIdentifier%.zip'); }"
+
+pause
+
 endlocal
