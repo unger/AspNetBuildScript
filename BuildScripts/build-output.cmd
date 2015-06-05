@@ -25,12 +25,12 @@ if exist %buildFullOutDir% (
 	echo %buildFullOutDir% already exists
 	exit /b
 	
-)
-else (
+) else (
 
 	if not "%sourceDir%" == "" (
 
-		robocopy %sourceDir% %buildFullOutDir%\Site /MIR /R:5 /W:1 /FFT
+		echo Copy from "%sourceDir%" to "%buildFullOutDir%"
+		robocopy %sourceDir% %buildFullOutDir%\Site /MIR /NP /NJS /NJH /NDL /NFL /NC /R:5 /W:1 /FFT		
 
 	)
 )

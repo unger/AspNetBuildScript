@@ -27,8 +27,12 @@ if not defined BuildRootDir (
 )
 
 
+
 set BuildTempDir=%BuildRootDir%\Temp
 set BuildOutDir=%BuildRootDir%\%BuildConfig%
+
+
+for /f "delims=" %%x in ('dir /ad /od /b %BuildOutDir%') do set LastBuildFullOutDir=%BuildOutDir%\%%x
 
 
 set WebProjectOutputFolder=%BuildTempDir%\_PublishedWebsites\%WebProjectName%
