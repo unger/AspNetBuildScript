@@ -33,6 +33,11 @@ call %BuildScriptsPath%/build-generate-deployscripts %BuildOutDir%\%BuildIdentif
 :: Zip output folder
 powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('%BuildOutDir%\%BuildIdentifier%', '%BuildOutDir%\%BuildConfig%_%BuildIdentifier%.zip'); }"
 
+
+:: Generate changes since last build
+call %BuildScriptsPath%/build-generate-changes-since-lastbuild
+
+
 pause
 
 endlocal
