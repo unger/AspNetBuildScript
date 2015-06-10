@@ -1,7 +1,7 @@
 set MsBuildLogFile=%BuildOutDir%\msbuild_%BuildIdentifier%.log
 
 if not exist "%BuildOutDir%/" (
-	mkdir %BuildOutDir%
+	mkdir "%BuildOutDir%"
 )
 
 cmd /c "cd /d %SolutionRootPath% && %NuGetPath% restore"
