@@ -8,26 +8,31 @@ call build-variables.cmd
 
 
 :: Import variables
-call %BuildScriptsPath%/build-global-variables.cmd %1
+call "%BuildScriptsPath%\build-global-variables.cmd" %1
 
 
 :: Pull from Git
-call %BuildScriptsPath%/build-git-clone.cmd
+call "%BuildScriptsPath%\build-git-clone.cmd"
 
 
 :: Compile solution
-call %BuildScriptsPath%/build-compile %SolutionRootPath% %BuildTempDir%
+call "%BuildScriptsPath%\build-compile.cmd" %SolutionRootPath% %BuildTempDir%
 
 
 :: Configuration transform
-call %BuildScriptsPath%/build-configuration-transform %SolutionRootPath%/%WebProjectName% %WebProjectOutputFolder%
+call "%BuildScriptsPath%\build-configuration-transform.cmd" %SolutionRootPath%/%WebProjectName% %WebProjectOutputFolder%
+
+
+:: Minify HTML
+call "%BuildScriptsPath%\bin\HtmlMinifier.exe" "%WebProjectOutputFolder%"
 
 
 :: Create output
-call %BuildScriptsPath%/build-output %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
+call "%BuildScriptsPath%\build-output.cmd" %WebProjectOutputFolder% %BuildOutDir% %BuildIdentifier%
+
 
 :: Generate deploy scripts
-call %BuildScriptsPath%/build-generate-deployscripts %BuildOutDir%\%BuildIdentifier%
+call "%BuildScriptsPath%\build-generate-deployscripts.cmd" %BuildOutDir%\%BuildIdentifier%
 
 
 :: Zip output folder
@@ -35,7 +40,7 @@ powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compressi
 
 
 :: Generate changes since last build
-call %BuildScriptsPath%/build-generate-changes-since-lastbuild
+call "%BuildScriptsPath%\build-generate-changes-since-lastbuild.cmd"
 
 
 pause
